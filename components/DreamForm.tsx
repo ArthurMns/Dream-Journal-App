@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { TextInput, Button, Checkbox } from "react-native-paper";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const { width } = Dimensions.get("window");
 
@@ -10,10 +12,26 @@ export default function DreamForm() {
 
     const [dreamText, setDreamText] = useState("");
     const [isLucidDream, setIsLucidDream] = useState(false);
-    const handleDreamSubmission = () => {
-        // Logique de traitement de la soumission du rêve
-        console.log("Rêve soumis:", dreamText, "Lucide:", isLucidDream);
-        // Réinitialisation du formulaire
+
+    const handleDreamSubmission = async () => {
+
+        try {
+            // Récupérer le tableau actuel depuis AsyncStorage
+            const existingData = await AsyncStorage.getItem('dreamFormDataArray');
+            const formDataArray = existingData ? JSON.parse(existingData) : [];
+            // Ajouter le nouveau formulaire au tableau
+            formDataArray.push({ dreamText, isLucidDream });
+            // Sauvegarder le tableau mis à jour dans AsyncStorage
+            await AsyncStorage.setItem('dreamFormDataArray', JSON.stringify(formDataArray));
+            const tempData = await AsyncStorage.getItem('dreamFormData');
+            console.log(
+                'AsyncStorage: ',
+                tempData
+            );
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde des données:', error);
+        }
+
         setDreamText("");
         setIsLucidDream(false);
     };
