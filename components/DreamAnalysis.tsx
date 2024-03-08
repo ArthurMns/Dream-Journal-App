@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface ApiResponse {
     concept_list: ApiEntry[];
@@ -14,15 +16,50 @@ interface ApiEntry {
     };
 }
 
+interface DreamData {
+    dreamText: string;
+}
+
 export default function DreamAnalysis(): JSX.Element {
 
     const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
+
+    const [dataArray, setdataArray] = useState<DreamData[]>([]);
+
+    useEffect(() => {
+
+        const getDescription = async () => {
+            try {
+                const tmp = await AsyncStorage.getItem('dreamFormDataArray');
+                setdataArray(tmp ? JSON.parse(tmp) : []);
+
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
+            }
+        }
+        getDescription();
+    }, [])
+
+    useEffect(() => {
+
+        const updateGetDescription = async () => {
+            try {
+                const tmp = await AsyncStorage.getItem('dreamFormDataArray');
+                setdataArray(tmp ? JSON.parse(tmp) : []);
+
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
+            }
+        }
+        updateGetDescription();
+    }, [dataArray])
+
 
     const handleApiRequest = async (): Promise<void> => {
         try {
             const apiUrl = 'https://api.meaningcloud.com/topics-2.0';
             const language = 'fr';
-            const tmpDream = "Maitre yoda à manger de empanadas";
+            const tmpDream = dataArray.at(-1)?.dreamText; // Prends le 'dreamTexte' du dernier élément de la liste
             const apiKey = "db4715c17b1e6fc19c1478bd8fde5c0d";
             const formdata = new FormData();
 
