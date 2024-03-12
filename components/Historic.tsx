@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { Text, Button, PaperProvider, Portal, Modal } from "react-native-paper";
+import { View, StyleSheet, Dimensions } from "react-native";
+import { Text, Button, Modal, Provider } from "react-native-paper";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DisplayDream from "./DisplayDream";
 
-interface DreamData {
+export interface DreamData {
     dreamTitle: string;
     dreamText: string;
     isLucidDream: boolean;
@@ -13,6 +14,15 @@ interface DreamData {
 export default function Historic(): JSX.Element {
 
     const [dataArray, setdataArray] = useState<DreamData[]>([]);
+    const [visible, setVisible] = useState(false);
+    const [selectedDreamIndex, setSelectedDreamIndex] = useState<number | null>(null);
+
+    const showModal = (index: number) => {
+        setSelectedDreamIndex(index);
+        setVisible(true);
+    };
+
+    const hideModal = () => setVisible(false);
 
     useEffect(() => {
         const getHistoric = async () => {
@@ -41,52 +51,53 @@ export default function Historic(): JSX.Element {
         updateComponent();
     }, [dataArray]);
 
-    const fonction = (index: number) => {
+    const deleteDream = async (index: number) => {
+        try {
+            const data = await AsyncStorage.getItem('dreamFormDataArray');
+            const dreamFormDataArray: DreamData[] = data ? JSON.parse(data) : [];
+            dreamFormDataArray.splice(index, 1);
 
-        const [visible, setVisible] = React.useState(false);
-
-        // const showModal = () => setVisible(true);
-        const hideModal = () => setVisible(false);
-        const containerStyle = { backgroundColor: 'white', padding: 20 };
+            await AsyncStorage.setItem('dreamFormDataArray', JSON.stringify(dreamFormDataArray));
 
 
-        return (
-            // <PaperProvider>
-                // <Portal>
-                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-                        <Text>{dataArray[index].dreamText ? dataArray[index].dreamText : "Pas de description ajoutée"} : {dataArray[index].isLucidDream ? 'Lucide' : 'Non Lucide'}</Text>
-                    </Modal>
-                // </Portal>
-            // </PaperProvider >
-        )
+        }
+        catch (error) {
+            console.log("Error deleting dream" + error);
+
+        }
+    }
+
+    return (
+        <Provider>
+            <View style={styles.container}>
+                <Text>Liste rêves :</Text>
+                {dataArray.map((dream, index) => (
+                    <View>
+                        <Button key={index} onPress={() => showModal(index)}>
+                            {dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté"}
+                        </Button>
+                        <Button onPress={() => deleteDream(index)}>Delete</Button>
+                    </View>
+                ))}
+                <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContent}>
+                    {selectedDreamIndex !== null && (
+                        <DisplayDream dream={dataArray[selectedDreamIndex]} hideModal={hideModal} />
+                    )}
+                </Modal>
+            </View>
+        </Provider>
+    );
 }
 
-return (
-    <View style={styles.container}>
-        <Text>Liste rêves :</Text>
-        {dataArray.map((dream, index) => (
-            <Button key={index} onPress={() => fonction(index)}>
-                {dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté"}
-                {/* {dream.dreamText ? dream.dreamText : "Pas de description ajoutée"} : {dream.isLucidDream ? 'Lucide' : 'Non Lucide'} */}
-            </Button>
-        ))}
-    </View>
-);
-}
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
+        padding: 5,
     },
-    input: {
-        marginBottom: 16,
-    },
-    checkboxContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 16,
-    },
-    button: {
-        marginTop: 8,
+    modalContent: {
+        width: width * 0.7, // Largeur de la modal à 90% de la largeur de l'écran
+        backgroundColor: 'white',
+        padding: 20,
     },
 });
