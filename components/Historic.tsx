@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import { Text, Button, Modal, Provider } from "react-native-paper";
-
+import { View, StyleSheet, Button, Modal, Text, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DisplayDream from "./DisplayDream";
 
@@ -11,19 +9,27 @@ export interface DreamData {
     isLucidDream: boolean;
 }
 
-export default function Historic(): JSX.Element {
+interface HistoricProps {
+    isModalOpen: boolean;
+    closeModal: () => void;
+}
+
+export default function Historic({ isModalOpen, closeModal }: HistoricProps): JSX.Element {
 
     const [dataArray, setdataArray] = useState<DreamData[]>([]);
-    const [visible, setVisible] = useState(false);
-    const [selectedDreamIndex, setSelectedDreamIndex] = useState<number | null>(null);
+    const [selectedDream, setSelectedDream] = useState<DreamData | null>(null);
 
-    const showModal = (index: number) => {
-        setSelectedDreamIndex(index);
-        setVisible(true);
+    const showModal = (dream: DreamData) => {
+        setSelectedDream(dream);
+        console.log(setSelectedDream(dream));
+        console.log(dream);
+
+        closeModal();
+
     };
 
-    const hideModal = () => setVisible(false);
 
+    // Refresh la page au changement de page
     useEffect(() => {
         const getHistoric = async () => {
             try {
@@ -37,6 +43,7 @@ export default function Historic(): JSX.Element {
         getHistoric();
     }, []);
 
+    // Refresh si dataArray change
     useEffect(() => {
         const updateComponent = async () => {
             try {
@@ -68,36 +75,40 @@ export default function Historic(): JSX.Element {
     }
 
     return (
-        <Provider>
+        <ScrollView>
             <View style={styles.container}>
                 <Text>Liste rêves :</Text>
                 {dataArray.map((dream, index) => (
-                    <View>
-                        <Button key={index} onPress={() => showModal(index)}>
-                            {dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté"}
+                    <View style={styles.childContainer}>
+                        <Button title={dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté"} onPress={() => showModal(dream)}>
                         </Button>
-                        <Button onPress={() => deleteDream(index)}>Delete</Button>
+
+                        <Button title="Delete" onPress={() => deleteDream(index)}></Button>
+
                     </View>
                 ))}
-                <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContent}>
-                    {selectedDreamIndex !== null && (
-                        <DisplayDream dream={dataArray[selectedDreamIndex]} hideModal={hideModal} />
+                <Modal visible={isModalOpen} onDismiss={closeModal} style={styles.modalContent}>
+                    {selectedDream && (
+                        <DisplayDream dream={selectedDream} />
                     )}
                 </Modal>
             </View>
-        </Provider>
+        </ScrollView>
     );
 }
 
-const { width } = Dimensions.get("window");
-
 const styles = StyleSheet.create({
     container: {
-        padding: 5,
+        flex: 1,
+        padding: 16,
     },
     modalContent: {
-        width: width * 0.7, // Largeur de la modal à 90% de la largeur de l'écran
+        flex: 1,
         backgroundColor: 'white',
         padding: 20,
     },
+    childContainer: {
+        margin: 10
+    }
 });
+

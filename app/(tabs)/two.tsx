@@ -1,19 +1,27 @@
-import { StyleSheet } from 'react-native';
-
-// import EditScreenInfo from '@/components/EditScreenInfo';
+import React, { useState } from 'react';
+import { StyleSheet, Dimensions } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import Historic from '@/components/Historic';
 
 export default function TabTwoScreen() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Historique des rêves</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Historic/>
-      {/* <EditScreenInfo path="app/(tabs)/two.tsx" /> */}
+      <View style={styles.content}>
+        <Historic isModalOpen={isModalOpen} closeModal={closeModal} />
+      </View>
     </View>
   );
 }
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
@@ -29,5 +37,11 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  content: {
+    width: windowWidth,
+    height: windowHeight,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
