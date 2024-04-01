@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { DreamData } from "./Historic";
 
 interface DisplayDreamProps {
@@ -10,13 +10,35 @@ interface DisplayDreamProps {
 const DisplayDream: React.FC<DisplayDreamProps> = ({ dream }) => {
 
     return (
-        <View style={{ backgroundColor: 'white', padding: 20 }}>
-            <Text>{dream.dreamText ? dream.dreamText : "Pas de description ajoutée"} : {dream.isLucidDream ? 'Lucide' : 'Non Lucide'}</Text>
+        <View style={styles.modalView}>
+            <Text style={styles.modalText}>{dream.dreamText ? dream.dreamText : "Pas de description ajoutée"} : {dream.isLucidDream ? 'Lucide' : 'Non Lucide'}</Text>
         </View>
     );
 };
 
 export default DisplayDream;
+
+const styles = StyleSheet.create({
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+});
 
 // useEffect(() => {
 //     const updateComponent = async () => {

@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import Historic from '@/components/Historic';
 
 export default function TabTwoScreen() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Historique des rêves</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <View style={styles.content}>
-        <Historic isModalOpen={isModalOpen} closeModal={closeModal} />
+        <Historic />
       </View>
     </View>
   );

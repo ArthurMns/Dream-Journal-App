@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Button, Modal, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Button, Modal, Text, ScrollView, Pressable } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DisplayDream from "./DisplayDream";
 
@@ -9,22 +9,16 @@ export interface DreamData {
     isLucidDream: boolean;
 }
 
-interface HistoricProps {
-    isModalOpen: boolean;
-    closeModal: () => void;
-}
-
-export default function Historic({ isModalOpen, closeModal }: HistoricProps): JSX.Element {
+export default function Historic(): JSX.Element {
 
     const [dataArray, setdataArray] = useState<DreamData[]>([]);
     const [selectedDream, setSelectedDream] = useState<DreamData | null>(null);
 
+    const [modalVisible, setModalVisible] = useState(false);
+
     const showModal = (dream: DreamData) => {
         setSelectedDream(dream);
-        console.log(setSelectedDream(dream));
-        console.log(dream);
-
-        closeModal();
+        setModalVisible(true)
 
     };
 
@@ -66,11 +60,9 @@ export default function Historic({ isModalOpen, closeModal }: HistoricProps): JS
 
             await AsyncStorage.setItem('dreamFormDataArray', JSON.stringify(dreamFormDataArray));
 
-
         }
         catch (error) {
             console.log("Error deleting dream" + error);
-
         }
     }
 
@@ -80,17 +72,28 @@ export default function Historic({ isModalOpen, closeModal }: HistoricProps): JS
                 <Text>Liste rêves :</Text>
                 {dataArray.map((dream, index) => (
                     <View style={styles.childContainer}>
-                        <Button title={dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté"} onPress={() => showModal(dream)}>
-                        </Button>
+                        <Pressable style={[styles.button]} onPress={() => showModal(dream)}>
+                            <Text>{dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté"}</Text>
+                        </Pressable>
+                        {/* </Button> */}
 
                         <Button title="Delete" onPress={() => deleteDream(index)}></Button>
 
                     </View>
                 ))}
-                <Modal visible={isModalOpen} onDismiss={closeModal} style={styles.modalContent}>
-                    {selectedDream && (
-                        <DisplayDream dream={selectedDream} />
-                    )}
+                <Modal visible={modalVisible} onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+                    animationType="slide"
+                    // transparent={true}
+                    style={[styles.centeredView]}>
+
+                    {selectedDream && (<DisplayDream dream={selectedDream} />)}
+
+                    <Pressable style={[styles.button, styles.buttonClose]}
+                        onPress={() => setModalVisible(!modalVisible)}>
+                        <Text >Close dream</Text>
+                    </Pressable>
                 </Modal>
             </View>
         </ScrollView>
@@ -109,6 +112,30 @@ const styles = StyleSheet.create({
     },
     childContainer: {
         margin: 10
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
     }
 });
 
