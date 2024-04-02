@@ -26,10 +26,10 @@ interface DreamData {
     isNightmare: boolean;
 }
 
-interface SelectDreamProps {
-    dataArray: DreamData[];
-    onSelectDream: (dream: DreamData) => void;
-}
+// interface SelectDreamProps {
+//     dataArray: DreamData[];
+//     onSelectDream: (dream: DreamData) => void;
+// }
 
 export default function DreamAnalysis(): JSX.Element {
 
@@ -85,11 +85,22 @@ export default function DreamAnalysis(): JSX.Element {
         value: dream.dreamTitle,
     }));
 
-    const handleApiRequest = async (): Promise<void> => {
+    async function getDreamTextByTitle(title: string) {
+        const dream = dataArray.find(dream => dream.dreamTitle === title);
+        console.log(typeof dream?.dreamText);
+
+        return dream ? dream.dreamText : "Dream not found";
+
+    }
+
+    const handleApiRequest = async (title: string): Promise<void> => {
         try {
             const apiUrl = 'https://api.meaningcloud.com/topics-2.0';
             const language = 'fr';
-            const tmpDream = dataArray.at(-1)?.dreamText; // Prends le 'dreamTexte' du dernier élément de la liste
+            const tmpDream = (await getDreamTextByTitle(title)).toString();
+            // const tmpDream = "Donald Trump eat chocolate with Pierre ";
+            console.log(typeof tmpDream);
+
             const apiKey = "db4715c17b1e6fc19c1478bd8fde5c0d";
             const formdata = new FormData();
 
@@ -130,9 +141,17 @@ export default function DreamAnalysis(): JSX.Element {
                     <Text style={styles.tableHeader}>Terme</Text>
                     <Text style={styles.tableHeader}>Type Sémantique</Text>
                 </View>
-                {entryList.map((entry, index) => (
+                {conceptsList.map((entry, index) => (
                     <View key={index} style={{ flexDirection: 'row', marginBottom: 5 }}>
-                        <Text style={styles.tableCell}>{entryList.indexOf(entry) < conceptsList.length ? 'Concept' : 'Entity'}</Text>
+                        <Text style={styles.tableCell}>Concept</Text>
+                        <Text style={styles.tableCell}>{entry.relevance}</Text>
+                        <Text style={styles.tableCell}>{entry.form}</Text>
+                        <Text style={styles.tableCell}>{entry.sementity.type}</Text>
+                    </View>
+                ))}
+                {entitiesList.map((entry, index) => (
+                    <View key={index} style={{ flexDirection: 'row', marginBottom: 5 }}>
+                        <Text style={styles.tableCell}>Entity</Text>
                         <Text style={styles.tableCell}>{entry.relevance}</Text>
                         <Text style={styles.tableCell}>{entry.form}</Text>
                         <Text style={styles.tableCell}>{entry.sementity.type}</Text>
@@ -144,19 +163,14 @@ export default function DreamAnalysis(): JSX.Element {
 
     return (
         <View>
-            {/* <SelectList
-                setSelected={(val: React.SetStateAction<string>) => setSelected(val)}
-                data={data}
-                save="value"
-
-            /> */}
             <SelectList
+                boxStyles={styles.selectList}
+                placeholder='Choisissez un rêve'
                 data={data}
                 setSelected={(val: React.SetStateAction<string>) => setSelected(val)}
-            // onSelect={handleSelect}
             // dropdownMaxHeight={300}
             />
-            <Button title="Effectuer la requête à MeaningCloud" onPress={handleApiRequest} />
+            <Button title="Effectuer la requête à MeaningCloud" onPress={() => handleApiRequest(selected)} />
             {apiResponse && (
                 <View>
                     <Text>Réponse de l'API :</Text>
@@ -168,10 +182,14 @@ export default function DreamAnalysis(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+    selectList: {
+        marginBottom: 15,
+    },
     tableHeader: {
         flex: 1,
         fontWeight: 'bold',
         marginRight: 5,
+        // backgroundColor: "black",
     },
     tableCell: {
         flex: 1,

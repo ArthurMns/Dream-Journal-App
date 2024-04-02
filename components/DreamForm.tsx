@@ -25,10 +25,6 @@ export default function DreamForm() {
             formDataArray.push({ dreamTitle, dreamText, isLucidDream, isNightmare });
             // Sauvegarder le tableau mis à jour dans AsyncStorage
             await AsyncStorage.setItem('dreamFormDataArray', JSON.stringify(formDataArray));
-            console.log(
-                'AsyncStorage: ',
-                existingData
-            );
         } catch (error) {
             console.error('Erreur lors de la sauvegarde des données:', error);
         }

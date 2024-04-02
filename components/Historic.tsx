@@ -62,7 +62,7 @@ export default function Historic(): JSX.Element {
 
         }
         catch (error) {
-            console.log("Error deleting dream" + error);
+            console.error("Error deleting dream" + error);
         }
     }
 
@@ -77,7 +77,7 @@ export default function Historic(): JSX.Element {
                         </Pressable>
                         {/* </Button> */}
 
-                        <Button title="Delete" onPress={() => deleteDream(index)}></Button>
+                        <Button title="Delete" onPress={() => deleteDream(index)} ></Button>
 
                     </View>
                 ))}
@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 120
     },
     modalContent: {
         flex: 1,
