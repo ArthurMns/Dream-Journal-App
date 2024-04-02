@@ -13,6 +13,7 @@ export default function DreamForm() {
     const [dreamTitle, setDreamTitle] = useState("");
     const [dreamText, setDreamText] = useState("");
     const [isLucidDream, setIsLucidDream] = useState(false);
+    const [isNightmare, setIsNightmare] = useState(false);
 
     const handleDreamSubmission = async () => {
 
@@ -21,7 +22,7 @@ export default function DreamForm() {
             const existingData = await AsyncStorage.getItem('dreamFormDataArray');
             const formDataArray = existingData ? JSON.parse(existingData) : [];
             // Ajouter le nouveau formulaire au tableau
-            formDataArray.push({dreamTitle, dreamText, isLucidDream });
+            formDataArray.push({ dreamTitle, dreamText, isLucidDream, isNightmare });
             // Sauvegarder le tableau mis à jour dans AsyncStorage
             await AsyncStorage.setItem('dreamFormDataArray', JSON.stringify(formDataArray));
             console.log(
@@ -35,6 +36,7 @@ export default function DreamForm() {
         setDreamTitle("");
         setDreamText("");
         setIsLucidDream(false);
+        setIsNightmare(false);
     };
 
     return (
@@ -57,12 +59,21 @@ export default function DreamForm() {
                 numberOfLines={6}
                 style={[styles.input, { width: width * 0.8, alignSelf: "center" }]}
             />
-            <View style={styles.checkboxContainer}>
-                <Checkbox.Item
-                    label="Rêve Lucide"
-                    status={isLucidDream ? "checked" : "unchecked"}
-                    onPress={() => setIsLucidDream(!isLucidDream)}
-                />
+            <View style={styles.checkBoxContainer}>
+                <View style={styles.checkbox}>
+                    <Checkbox.Item
+                        label="Rêve Lucide"
+                        status={isLucidDream ? "checked" : "unchecked"}
+                        onPress={() => setIsLucidDream(!isLucidDream)}
+                    />
+                </View>
+                <View style={styles.checkbox}>
+                    <Checkbox.Item
+                        label="Cauchemar"
+                        status={isNightmare ? "checked" : "unchecked"}
+                        onPress={() => setIsNightmare(!isNightmare)}
+                    />
+                </View>
             </View>
             <Button
                 mode="contained"
@@ -83,14 +94,18 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     input2: {
-        height: 50,
-    },
-    checkboxContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 16,
+        height: 60,
     },
     button: {
         marginTop: 8,
     },
+    checkbox: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 16,
+    },
+    checkBoxContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    }
 });

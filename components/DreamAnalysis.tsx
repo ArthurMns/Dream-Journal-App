@@ -3,6 +3,9 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { SelectList } from 'react-native-dropdown-select-list'
+
+
 interface ApiResponse {
     concept_list: ApiEntry[];
     entity_list: ApiEntry[];
@@ -17,7 +20,15 @@ interface ApiEntry {
 }
 
 interface DreamData {
+    dreamTitle: string;
     dreamText: string;
+    isLucidDream: boolean;
+    isNightmare: boolean;
+}
+
+interface SelectDreamProps {
+    dataArray: DreamData[];
+    onSelectDream: (dream: DreamData) => void;
 }
 
 export default function DreamAnalysis(): JSX.Element {
@@ -25,6 +36,18 @@ export default function DreamAnalysis(): JSX.Element {
     const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
 
     const [dataArray, setdataArray] = useState<DreamData[]>([]);
+
+    const [selected, setSelected] = React.useState("");
+
+    // const data = [
+    //     { value: 'Mobiles', disabled: true },
+    //     { value: 'Appliances' },
+    //     { value: 'Cameras' },
+    //     { value: 'Computers', disabled: true },
+    //     { value: 'Vegetables' },
+    //     { value: 'Diary Products' },
+    //     { value: 'Drinks' },
+    // ]
 
     useEffect(() => {
 
@@ -38,6 +61,8 @@ export default function DreamAnalysis(): JSX.Element {
             }
         }
         getDescription();
+
+
     }, [])
 
     useEffect(() => {
@@ -54,6 +79,11 @@ export default function DreamAnalysis(): JSX.Element {
         updateGetDescription();
     }, [dataArray])
 
+    // console.log(dataArray);
+
+    const data = dataArray.map(dream => ({
+        value: dream.dreamTitle,
+    }));
 
     const handleApiRequest = async (): Promise<void> => {
         try {
@@ -114,6 +144,18 @@ export default function DreamAnalysis(): JSX.Element {
 
     return (
         <View>
+            {/* <SelectList
+                setSelected={(val: React.SetStateAction<string>) => setSelected(val)}
+                data={data}
+                save="value"
+
+            /> */}
+            <SelectList
+                data={data}
+                setSelected={(val: React.SetStateAction<string>) => setSelected(val)}
+            // onSelect={handleSelect}
+            // dropdownMaxHeight={300}
+            />
             <Button title="Effectuer la requête à MeaningCloud" onPress={handleApiRequest} />
             {apiResponse && (
                 <View>

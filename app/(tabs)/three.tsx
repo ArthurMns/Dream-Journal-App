@@ -5,7 +5,7 @@ import DreamAnalysis from '@/components/DreamAnalysis';
 export default function TabThreeScreen() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Tab Three</Text>
+            <Text style={styles.title}>Analyse ton Rêve</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
             <DreamAnalysis />
         </View>

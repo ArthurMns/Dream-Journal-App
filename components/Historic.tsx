@@ -7,6 +7,7 @@ export interface DreamData {
     dreamTitle: string;
     dreamText: string;
     isLucidDream: boolean;
+    isNightmare: boolean;
 }
 
 export default function Historic(): JSX.Element {
@@ -39,17 +40,16 @@ export default function Historic(): JSX.Element {
 
     // Refresh si dataArray change
     useEffect(() => {
-        const updateComponent = async () => {
+        const getHistoric2 = async () => {
             try {
                 const data = await AsyncStorage.getItem('dreamFormDataArray');
-                const dreamFormDataArray: DreamData[] = data ? JSON.parse(data) : [];
-                setdataArray(dreamFormDataArray);
+                setdataArray(data ? JSON.parse(data) : []);
 
             } catch (error) {
                 console.error('Erreur lors de la mise à jour des données:', error);
             }
         };
-        updateComponent();
+        getHistoric2();
     }, [dataArray]);
 
     const deleteDream = async (index: number) => {
@@ -71,7 +71,7 @@ export default function Historic(): JSX.Element {
             <View style={styles.container}>
                 <Text>Liste rêves :</Text>
                 {dataArray.map((dream, index) => (
-                    <View style={styles.childContainer}>
+                    <View style={styles.childContainer} key={index}>
                         <Pressable style={[styles.button]} onPress={() => showModal(dream)}>
                             <Text>{dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté"}</Text>
                         </Pressable>
@@ -87,13 +87,14 @@ export default function Historic(): JSX.Element {
                     animationType="slide"
                     // transparent={true}
                     style={[styles.centeredView]}>
+                    <View style={styles.modalContent}>
+                        {selectedDream && (<DisplayDream dream={selectedDream} />)}
 
-                    {selectedDream && (<DisplayDream dream={selectedDream} />)}
-
-                    <Pressable style={[styles.button, styles.buttonClose]}
-                        onPress={() => setModalVisible(!modalVisible)}>
-                        <Text >Close dream</Text>
-                    </Pressable>
+                        <Pressable style={[styles.button, styles.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}>
+                            <Text >Close dream</Text>
+                        </Pressable>
+                    </View>
                 </Modal>
             </View>
         </ScrollView>
@@ -104,11 +105,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        marginTop: 20
     },
     modalContent: {
         flex: 1,
         backgroundColor: 'white',
-        padding: 20,
+        padding: 35,
     },
     childContainer: {
         margin: 10
