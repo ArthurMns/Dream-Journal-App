@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
-import { DreamData } from "./Historic";
+import { DreamData } from "../controllers/dreamController";
 
 interface DisplayDreamProps {
     dream: DreamData;

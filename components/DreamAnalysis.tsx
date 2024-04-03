@@ -26,11 +26,6 @@ interface DreamData {
     isNightmare: boolean;
 }
 
-// interface SelectDreamProps {
-//     dataArray: DreamData[];
-//     onSelectDream: (dream: DreamData) => void;
-// }
-
 export default function DreamAnalysis(): JSX.Element {
 
     const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
@@ -38,16 +33,6 @@ export default function DreamAnalysis(): JSX.Element {
     const [dataArray, setdataArray] = useState<DreamData[]>([]);
 
     const [selected, setSelected] = React.useState("");
-
-    // const data = [
-    //     { value: 'Mobiles', disabled: true },
-    //     { value: 'Appliances' },
-    //     { value: 'Cameras' },
-    //     { value: 'Computers', disabled: true },
-    //     { value: 'Vegetables' },
-    //     { value: 'Diary Products' },
-    //     { value: 'Drinks' },
-    // ]
 
     useEffect(() => {
 
