@@ -8,6 +8,7 @@ export interface DreamData {
     dreamText: string;
     isLucidDream: boolean;
     isNightmare: boolean;
+    inputDate: any;
 }
 
 export default function Historic(): JSX.Element {
@@ -67,15 +68,15 @@ export default function Historic(): JSX.Element {
     }
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <Text>Liste rêves :</Text>
+        <ScrollView style={styles.container}>
+            <View>
+                <Text style={styles.boldText}>Liste rêves :</Text>
                 {dataArray.map((dream, index) => (
                     <View style={styles.childContainer} key={index}>
                         <Pressable style={[styles.button]} onPress={() => showModal(dream)}>
-                            <Text>{dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté"}</Text>
+                            <Text>{dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté "}</Text>
+                            <Text>{dream.inputDate}</Text>
                         </Pressable>
-                        {/* </Button> */}
 
                         <Button title="Delete" onPress={() => deleteDream(index)} ></Button>
 
@@ -104,9 +105,10 @@ export default function Historic(): JSX.Element {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
         marginTop: 20,
-        marginBottom: 120
+        marginBottom: 110,
+        width: '100 %',
+
     },
     modalContent: {
         flex: 1,
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
         padding: 35,
     },
     childContainer: {
-        margin: 10
+        margin: 10,
     },
     centeredView: {
         flex: 1,
@@ -123,9 +125,10 @@ const styles = StyleSheet.create({
         marginTop: 22,
     },
     button: {
-        borderRadius: 20,
+        borderRadius: 10,
+        width: '100 %',
         padding: 10,
-        elevation: 2,
+        backgroundColor: '#E6E6FA',
     },
 
     buttonClose: {
@@ -139,6 +142,9 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
+    },
+    boldText: {
+        fontWeight: 'bold',
     }
 });
 

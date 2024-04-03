@@ -87,8 +87,6 @@ export default function DreamAnalysis(): JSX.Element {
 
     async function getDreamTextByTitle(title: string) {
         const dream = dataArray.find(dream => dream.dreamTitle === title);
-        console.log(typeof dream?.dreamText);
-
         return dream ? dream.dreamText : "Dream not found";
 
     }
@@ -98,8 +96,6 @@ export default function DreamAnalysis(): JSX.Element {
             const apiUrl = 'https://api.meaningcloud.com/topics-2.0';
             const language = 'fr';
             const tmpDream = (await getDreamTextByTitle(title)).toString();
-            // const tmpDream = "Donald Trump eat chocolate with Pierre ";
-            console.log(typeof tmpDream);
 
             const apiKey = "db4715c17b1e6fc19c1478bd8fde5c0d";
             const formdata = new FormData();
@@ -162,15 +158,14 @@ export default function DreamAnalysis(): JSX.Element {
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <SelectList
                 boxStyles={styles.selectList}
                 placeholder='Choisissez un rêve'
                 data={data}
                 setSelected={(val: React.SetStateAction<string>) => setSelected(val)}
-            // dropdownMaxHeight={300}
             />
-            <Button title="Effectuer la requête à MeaningCloud" onPress={() => handleApiRequest(selected)} />
+            <Button title="Lancer l'analyse de Rêve" onPress={() => handleApiRequest(selected)} />
             {apiResponse && (
                 <View>
                     <Text>Réponse de l'API :</Text>
@@ -182,6 +177,9 @@ export default function DreamAnalysis(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        width: '75%',
+    },
     selectList: {
         marginBottom: 15,
     },
