@@ -16,7 +16,7 @@
 
 
 ## Initialisation :
-Clone the repo and go at the root :  ```cd Dream-Journal-App```. 
+Clone the repo and go at the root
 
 Then execute :
   
@@ -25,7 +25,7 @@ npm install
 ``` 
 ## Launch server 
 
-At the root of the directory, execute : ```npx expo ```
+At the root of the directory and execute : ```npx expo ```
 
 You can use the QRCode to open the app on your smartphone with expo go, with your browser or Android Studio.
 
