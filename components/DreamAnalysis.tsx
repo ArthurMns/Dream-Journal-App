@@ -5,26 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { SelectList } from 'react-native-dropdown-select-list'
 
+import { DreamData, ApiResponse } from '../controllers/dreamController';
 
-interface ApiResponse {
-    concept_list: ApiEntry[];
-    entity_list: ApiEntry[];
-}
-
-interface ApiEntry {
-    relevance: number;
-    form: string;
-    sementity: {
-        type: string;
-    };
-}
-
-interface DreamData {
-    dreamTitle: string;
-    dreamText: string;
-    isLucidDream: boolean;
-    isNightmare: boolean;
-}
 
 export default function DreamAnalysis(): JSX.Element {
 
@@ -34,37 +16,23 @@ export default function DreamAnalysis(): JSX.Element {
 
     const [selected, setSelected] = React.useState("");
 
-    useEffect(() => {
-
-        const getDescription = async () => {
-            try {
-                const tmp = await AsyncStorage.getItem('dreamFormDataArray');
-                setdataArray(tmp ? JSON.parse(tmp) : []);
-
-            } catch (error) {
-                console.error('Erreur lors de la récupération des données:', error);
-            }
+    const getHistoric = async (): Promise<void> => {
+        try {
+            const tmp = await AsyncStorage.getItem('dreamFormDataArray');
+            setdataArray(tmp ? JSON.parse(tmp) : []);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des données get:', error);
         }
-        getDescription();
-
-
-    }, [])
+    }
 
     useEffect(() => {
+        getHistoric();
+    }, []);
 
-        const updateGetDescription = async () => {
-            try {
-                const tmp = await AsyncStorage.getItem('dreamFormDataArray');
-                setdataArray(tmp ? JSON.parse(tmp) : []);
+    useEffect(() => {
+        getHistoric();
+    }, [dataArray]);
 
-            } catch (error) {
-                console.error('Erreur lors de la récupération des données:', error);
-            }
-        }
-        updateGetDescription();
-    }, [dataArray])
-
-    // console.log(dataArray);
 
     const data = dataArray.map(dream => ({
         value: dream.dreamTitle,
@@ -83,6 +51,7 @@ export default function DreamAnalysis(): JSX.Element {
             const tmpDream = (await getDreamTextByTitle(title)).toString();
 
             const apiKey = "db4715c17b1e6fc19c1478bd8fde5c0d";
+            // const apiKey = "Your api key" //
             const formdata = new FormData();
 
             formdata.append('key', apiKey);
@@ -172,7 +141,6 @@ const styles = StyleSheet.create({
         flex: 1,
         fontWeight: 'bold',
         marginRight: 5,
-        // backgroundColor: "black",
     },
     tableCell: {
         flex: 1,

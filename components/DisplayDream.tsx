@@ -1,10 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
-import { DreamData } from "../controllers/dreamController";
+import { DisplayDreamProps } from "../controllers/dreamController";
 
-interface DisplayDreamProps {
-    dream: DreamData;
-}
 
 const DisplayDream: React.FC<DisplayDreamProps> = ({ dream }) => {
 

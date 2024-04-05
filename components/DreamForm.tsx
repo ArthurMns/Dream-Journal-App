@@ -3,13 +3,12 @@ import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { TextInput, Button, Checkbox } from "react-native-paper";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DatePickerInput } from "react-native-paper-dates";
 
 
 const { width } = Dimensions.get("window");
 
 
-export default function DreamForm() {
+export default function DreamForm(): React.JSX.Element {
 
     const [dreamTitle, setDreamTitle] = useState("");
     const [dreamText, setDreamText] = useState("");
@@ -17,17 +16,16 @@ export default function DreamForm() {
     const [isNightmare, setIsNightmare] = useState(false);
     let inputDate;
 
-    const handleDreamSubmission = async () => {
+    const handleDreamSubmission = async (): Promise<void> => {
 
         try {
-            // Récupérer le tableau actuel depuis AsyncStorage
             const existingData = await AsyncStorage.getItem('dreamFormDataArray');
             const formDataArray = existingData ? JSON.parse(existingData) : [];
-            // Ajouter le nouveau formulaire au tableau
+
             inputDate = new Date().toLocaleDateString();
 
             formDataArray.push({ dreamTitle, dreamText, isLucidDream, isNightmare, inputDate });
-            // Sauvegarder le tableau mis à jour dans AsyncStorage
+
             await AsyncStorage.setItem('dreamFormDataArray', JSON.stringify(formDataArray));
 
         } catch (error) {

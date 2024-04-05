@@ -4,16 +4,10 @@ import { View, StyleSheet, Button, Modal, Text, ScrollView, Pressable } from "re
 import DisplayDream from "./DisplayDream";
 import { Searchbar } from 'react-native-paper';
 
-import { getHistoric, deleteDream, DreamData } from '../controllers/dreamController';
+import { deleteDream, DreamData } from '../controllers/dreamController';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// export interface DreamData {
-//     dreamTitle: string;
-//     dreamText: string;
-//     isLucidDream: boolean;
-//     isNightmare: boolean;
-//     inputDate: any;
-// }
+
 
 export default function Historic(): JSX.Element {
 
@@ -27,12 +21,12 @@ export default function Historic(): JSX.Element {
         setModalVisible(true);
     };
 
-    const getHistoric = async () => {
+    const getHistoric = async (): Promise<void> => {
         try {
             const tmp = await AsyncStorage.getItem('dreamFormDataArray');
             setdataArray(tmp ? JSON.parse(tmp) : []);
         } catch (error) {
-            console.error('Erreur lors de la récupération des données:', error);
+            console.error('Erreur lors de la récupération des données get:', error);
         }
     }
 
@@ -55,6 +49,7 @@ export default function Historic(): JSX.Element {
         <ScrollView style={styles.container}>
             <View>
                 <Searchbar
+                    style={styles.search}
                     placeholder="Search"
                     onChangeText={setSearchQuery}
                     value={searchQuery}
@@ -124,6 +119,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     boldText: {
+        marginLeft: 10,
+        fontSize: 15,
         fontWeight: 'bold',
+    },
+    search: {
+        marginLeft: 18,
+        width: '90%',
     }
 });

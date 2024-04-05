@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 
 export interface DreamData {
     dreamTitle: string;
@@ -8,14 +9,21 @@ export interface DreamData {
     inputDate: any;
 }
 
-export async function getHistoric(): Promise<DreamData[]> {
-    try {
-        const tmp = await AsyncStorage.getItem('dreamFormDataArray');
-        return tmp ? JSON.parse(tmp) : [];
-    } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
-        return [];
-    }
+export interface ApiResponse {
+    concept_list: ApiEntry[];
+    entity_list: ApiEntry[];
+}
+
+export interface ApiEntry {
+    relevance: number;
+    form: string;
+    sementity: {
+        type: string;
+    };
+}
+
+export interface DisplayDreamProps {
+    dream: DreamData;
 }
 
 export async function deleteDream(index: number): Promise<void> {
