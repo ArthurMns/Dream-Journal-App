@@ -13,12 +13,18 @@ export default function Historic(): JSX.Element {
 
     const [dataArray, setdataArray] = useState<DreamData[]>([]);
     const [selectedDream, setSelectedDream] = useState<DreamData | null>(null);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalDreamVisible, setModalDreamVisible] = useState(false);
+    const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const showModal = (dream: DreamData) => {
+    const showModalDream = (dream: DreamData) => {
         setSelectedDream(dream);
-        setModalVisible(true);
+        setModalDreamVisible(true);
+    };
+
+    const showModalDelete = (index: number) => {
+        setModalDeleteVisible(true);
+        console.log(index);
     };
 
     const getHistoric = async (): Promise<void> => {
@@ -57,23 +63,49 @@ export default function Historic(): JSX.Element {
                 <Text style={styles.boldText}>Liste rêves :</Text>
                 {filteredDreams.map((dream, index) => (
                     <View style={styles.childContainer} key={index}>
-                        <Pressable style={styles.button} onPress={() => showModal(dream)}>
+
+                        <Pressable style={styles.button} onPress={() => showModalDream(dream)}>
                             <Text>{dream.dreamTitle ? dream.dreamTitle : "Pas de Titre ajouté "}</Text>
                             <Text>{dream.inputDate}</Text>
                         </Pressable>
-                        <Button title="Delete" onPress={async () => await deleteDream(index)} />
+
+                        {/* <Button title="Delete" onPress={async () => deleteDream(index)} /> */}
+
+                        <Button title="Delete" onPress={() => showModalDelete(index)} />
+
+                        <Modal transparent visible={modalDeleteVisible} onRequestClose={() => setModalDeleteVisible(false)} animationType="slide">
+                            <View style={styles.centeredView}>
+                                <View style={styles.modalContentDelete}>
+                                    <Text>Etes vous sur de vouloir supprimer le reve ?</Text>
+
+                                    <View style={styles.doublePressable}>
+
+                                        <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalDeleteVisible(false)}>
+                                            <Text >Annuler</Text>
+                                        </Pressable>
+
+                                        <Pressable style={[styles.button, styles.buttonClose]} onPress={() => console.log(index)}>
+                                            <Text >Suppriper</Text>
+                                        </Pressable>
+                                    </View>
+                                </View>
+                            </View>
+                        </Modal>
+
                     </View>
                 ))}
-                <Modal visible={modalVisible} onRequestClose={() => setModalVisible(false)} animationType="slide">
+                <Modal visible={modalDreamVisible} onRequestClose={() => setModalDreamVisible(false)} animationType="slide">
                     <View style={styles.centeredView}>
                         <View style={styles.modalContent}>
                             {selectedDream && (<DisplayDream dream={selectedDream} />)}
-                            <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(false)}>
+
+                            <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalDreamVisible(false)}>
                                 <Text >Close dream</Text>
                             </Pressable>
                         </View>
                     </View>
                 </Modal>
+
             </View>
         </ScrollView>
     );
@@ -102,7 +134,6 @@ const styles = StyleSheet.create({
     },
     button: {
         borderRadius: 10,
-        width: '100%',
         padding: 10,
         backgroundColor: '#E6E6FA',
     },
@@ -126,5 +157,15 @@ const styles = StyleSheet.create({
     search: {
         marginLeft: 18,
         width: '90%',
+    },
+    modalContentDelete: {
+        flex: 1,
+        padding: 35,
+        backgroundColor: '#E6E6FA',
+    },
+    doublePressable: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around'
     }
 });

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { SelectList } from 'react-native-dropdown-select-list'
 
 import { DreamData, ApiResponse } from '../controllers/dreamController';
@@ -51,7 +49,7 @@ export default function DreamAnalysis(): JSX.Element {
             const tmpDream = (await getDreamTextByTitle(title)).toString();
 
             const apiKey = "db4715c17b1e6fc19c1478bd8fde5c0d";
-            // const apiKey = "Your api key" //
+            // const apiKey = "Put your API key here"
             const formdata = new FormData();
 
             formdata.append('key', apiKey);
