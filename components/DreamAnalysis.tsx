@@ -48,8 +48,7 @@ export default function DreamAnalysis(): JSX.Element {
             const language = 'fr';
             const tmpDream = (await getDreamTextByTitle(title)).toString();
 
-            const apiKey = "db4715c17b1e6fc19c1478bd8fde5c0d";
-            // const apiKey = "Put your API key here"
+            const apiKey = "Put your API key here"
             const formdata = new FormData();
 
             formdata.append('key', apiKey);

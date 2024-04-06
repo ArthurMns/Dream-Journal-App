@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Button, Modal, Text, ScrollView, Pressable } from "react-native";
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import DisplayDream from "./DisplayDream";
 import { Searchbar } from 'react-native-paper';
 
@@ -137,7 +136,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22,
-        // height: '20%'
     },
     button: {
         borderRadius: 10,
@@ -169,7 +167,6 @@ const styles = StyleSheet.create({
         padding: 35,
         backgroundColor: 'white',
         borderRadius: 20,
-        // alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,

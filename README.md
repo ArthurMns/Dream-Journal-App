@@ -10,7 +10,6 @@
 
 - Expo
 
-  
 
 # Getting started
 
@@ -19,7 +18,7 @@
 Clone the repo and go at the root :  ```cd Dream-Journal-App```. 
 
 Then execute :
-  
+
 ```bash 
 npm install 
 ``` 
@@ -36,30 +35,17 @@ You can use the QRCode to open the app on your smartphone with expo go, with you
 
 # Structure and Architecture
 
-The application works on a system of Tabs to change page.
+The application works on a system of Tabs to change page, use the AsyncStorage to stock the dreams
 
-  
-
-src/
-
-components/: Composants réutilisables utilisés dans l'application.
-
-screens/: Écrans de l'application, regroupés par fonctionnalité.
-
-controllers/: Gestionnaires de la logique métier de l'application, tels que l'accès à AsyncStorage.
-
-models/: Interfaces et modèles de données utilisés dans l'application.
-
-utils/: Fonctions utilitaires et outils pour l'application.
-
-L'architecture suit une approche basée sur les fonctionnalités, avec une séparation claire entre les composants visuels, la logique métier et les modèles de données. L'utilisation de AsyncStorage permet de stocker les données localement sur l'appareil de l'utilisateur.
-
-  
 
 # Implemented features
 
-Ajout de rêve via un formulaire.
+- Adding a dream via a form (Title, description, luicid dream, nightmare).
 
-Consultation de l'historique des rêves.
+- Consult dream history.
+	- Search bar
+	- Delete a dream
 
-Analyse sémantique des rêves à l'aide d'une API externe.
+- Semantic analysis of dreams using the external API [MeaningCloud](https://www.meaningcloud.com/developer/apis).
+
+# Screenshots ennnnn
