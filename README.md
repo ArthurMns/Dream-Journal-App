@@ -2,7 +2,7 @@
 
 
 
-## Stack Technique
+## tech stack
 
 - React Native
 
@@ -16,7 +16,7 @@
 
 
 ## Initialisation :
-Clone the repo and go at the root
+Clone the repo and go at the root :  ```cd Dream-Journal-App```. 
 
 Then execute :
   
@@ -25,16 +25,18 @@ npm install
 ``` 
 ## Launch server 
 
-At the root of the directory and execute : ```npx expo ```
+At the root of the directory, execute : 
+```bash
+npx expo 
+```
 
 You can use the QRCode to open the app on your smartphone with expo go, with your browser or Android Studio.
 
- 
 
-##
-Structure et Architecture
 
-Le projet est structuré de la manière suivante :
+# Structure and Architecture
+
+The application works on a system of Tabs to change page.
 
   
 
@@ -54,7 +56,7 @@ L'architecture suit une approche basée sur les fonctionnalités, avec une sépa
 
   
 
-Fonctionnalités Implémentées
+# Implemented features
 
 Ajout de rêve via un formulaire.
 

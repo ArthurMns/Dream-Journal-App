@@ -12,7 +12,7 @@ export default function DreamAnalysis(): JSX.Element {
 
     const [dataArray, setdataArray] = useState<DreamData[]>([]);
 
-    const [selected, setSelected] = React.useState("");
+    const [selected, setSelected] = useState("");
 
     const getHistoric = async (): Promise<void> => {
         try {
@@ -36,7 +36,7 @@ export default function DreamAnalysis(): JSX.Element {
         value: dream.dreamTitle,
     }));
 
-    async function getDreamTextByTitle(title: string) {
+    async function getDreamTextByTitle(title: string): Promise<string> {
         const dream = dataArray.find(dream => dream.dreamTitle === title);
         return dream ? dream.dreamText : "Dream not found";
 

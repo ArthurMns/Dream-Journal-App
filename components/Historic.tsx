@@ -16,15 +16,24 @@ export default function Historic(): JSX.Element {
     const [modalDreamVisible, setModalDreamVisible] = useState(false);
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
-    const showModalDream = (dream: DreamData) => {
+    const showModalDream = (dream: DreamData): void => {
         setSelectedDream(dream);
         setModalDreamVisible(true);
     };
 
-    const showModalDelete = (index: number) => {
+    const showModalDelete = (index: number): void => {
+        setDeleteIndex(index);
         setModalDeleteVisible(true);
-        console.log(index);
+    };
+
+    const handleDelete = async (): Promise<void> => {
+        if (deleteIndex !== null) {
+            await deleteDream(deleteIndex);
+            setDeleteIndex(null);
+            setModalDeleteVisible(false);
+        }
     };
 
     const getHistoric = async (): Promise<void> => {
@@ -36,12 +45,10 @@ export default function Historic(): JSX.Element {
         }
     }
 
-    // Refresh la page au chargement
     useEffect(() => {
         getHistoric();
     }, []);
 
-    // Refresh si dataArray change
     useEffect(() => {
         getHistoric();
     }, [dataArray]);
@@ -69,11 +76,9 @@ export default function Historic(): JSX.Element {
                             <Text>{dream.inputDate}</Text>
                         </Pressable>
 
-                        {/* <Button title="Delete" onPress={async () => deleteDream(index)} /> */}
-
                         <Button title="Delete" onPress={() => showModalDelete(index)} />
 
-                        <Modal transparent visible={modalDeleteVisible} onRequestClose={() => setModalDeleteVisible(false)} animationType="slide">
+                        <Modal transparent visible={modalDeleteVisible} onRequestClose={() => setModalDeleteVisible(false)} animationType="fade">
                             <View style={styles.centeredView}>
                                 <View style={styles.modalContentDelete}>
                                     <Text>Etes vous sur de vouloir supprimer le reve ?</Text>
@@ -84,8 +89,8 @@ export default function Historic(): JSX.Element {
                                             <Text >Annuler</Text>
                                         </Pressable>
 
-                                        <Pressable style={[styles.button, styles.buttonClose]} onPress={() => console.log(index)}>
-                                            <Text >Suppriper</Text>
+                                        <Pressable style={[styles.button, styles.buttonClose]} onPress={() => handleDelete()}>
+                                            <Text >Supprimer</Text>
                                         </Pressable>
                                     </View>
                                 </View>
@@ -94,6 +99,7 @@ export default function Historic(): JSX.Element {
 
                     </View>
                 ))}
+
                 <Modal visible={modalDreamVisible} onRequestClose={() => setModalDreamVisible(false)} animationType="slide">
                     <View style={styles.centeredView}>
                         <View style={styles.modalContent}>
@@ -107,7 +113,7 @@ export default function Historic(): JSX.Element {
                 </Modal>
 
             </View>
-        </ScrollView>
+        </ScrollView >
     );
 }
 
@@ -131,6 +137,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22,
+        // height: '20%'
     },
     button: {
         borderRadius: 10,
@@ -159,13 +166,22 @@ const styles = StyleSheet.create({
         width: '90%',
     },
     modalContentDelete: {
-        flex: 1,
         padding: 35,
-        backgroundColor: '#E6E6FA',
+        backgroundColor: 'white',
+        borderRadius: 20,
+        // alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
     doublePressable: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
     }
 });
