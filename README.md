@@ -10,6 +10,7 @@
 
 - Expo
 
+  
 
 # Getting started
 
@@ -18,7 +19,7 @@
 Clone the repo and go at the root :  ```cd Dream-Journal-App```. 
 
 Then execute :
-
+  
 ```bash 
 npm install 
 ``` 
@@ -40,7 +41,7 @@ The application works on a system of Tabs to change page, use the AsyncStorage t
 
 # Implemented features
 
-- Adding a dream via a form (Title, description, luicid dream, nightmare).
+- Add a dream via a form (Title, description, luicid dream, nightmare).
 
 - Consult dream history.
 	- Search bar
@@ -48,4 +49,13 @@ The application works on a system of Tabs to change page, use the AsyncStorage t
 
 - Semantic analysis of dreams using the external API [MeaningCloud](https://www.meaningcloud.com/developer/apis).
 
-# Screenshots ennnnn
+# Screenshots
+
+![screenshot1](./assets/images/screenshot1.png "")
+![screenshot1](./assets/images/screenshot2.png "")
+![screenshot1](./assets/images/screenshot3.png "")
+![screenshot1](./assets/images/screenshot4.png "")
+![screenshot1](./assets/images/screenshot5.png "")
+![screenshot1](./assets/images/screenshot6.png "")
+![screenshot1](./assets/images/screenshot7.png "")
+![screenshot1](./assets/images/screenshot8.png "")

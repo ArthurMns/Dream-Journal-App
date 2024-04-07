@@ -22,8 +22,9 @@ export default function Historic(): JSX.Element {
         setModalDreamVisible(true);
     };
 
-    const showModalDelete = (index: number): void => {
+    const showModalDelete = (index: number, dream: DreamData): void => {
         setDeleteIndex(index);
+        setSelectedDream(dream);
         setModalDeleteVisible(true);
     };
 
@@ -75,12 +76,12 @@ export default function Historic(): JSX.Element {
                             <Text>{dream.inputDate}</Text>
                         </Pressable>
 
-                        <Button title="Delete" onPress={() => showModalDelete(index)} />
+                        <Button title="Delete" onPress={() => showModalDelete(index, dream)} />
 
                         <Modal transparent visible={modalDeleteVisible} onRequestClose={() => setModalDeleteVisible(false)} animationType="fade">
                             <View style={styles.centeredView}>
                                 <View style={styles.modalContentDelete}>
-                                    <Text>Etes vous sur de vouloir supprimer le reve ?</Text>
+                                    <Text>Etes vous sur de vouloir supprimer le reve {selectedDream?.dreamTitle} ?</Text>
 
                                     <View style={styles.doublePressable}>
 
@@ -144,6 +145,7 @@ const styles = StyleSheet.create({
     },
     buttonClose: {
         backgroundColor: '#2196F3',
+        marginTop: 15,
     },
     textStyle: {
         color: 'white',
