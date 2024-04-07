@@ -30,13 +30,13 @@ At the root of the directory, execute :
 npx expo 
 ```
 
-You can use the QRCode to open the app on your smartphone with expo go, with your browser or Android Studio.
+You can use the QRCode to open the app on your smartphone with expo go, or with your browser or Android Studio.
 
 
 
 # Structure and Architecture
 
-The application works on a system of Tabs to change page, use the AsyncStorage to stock the dreams
+The application works on a system of Tabs to change page and use the AsyncStorage to stock the dreams
 
 
 # Implemented features
@@ -46,6 +46,7 @@ The application works on a system of Tabs to change page, use the AsyncStorage t
 - Consult dream history.
 	- Search bar
 	- Delete a dream
+	- Display Description and characteristics
 
 - Semantic analysis of dreams using the external API [MeaningCloud](https://www.meaningcloud.com/developer/apis).
 
