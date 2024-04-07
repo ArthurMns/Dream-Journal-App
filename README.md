@@ -32,7 +32,7 @@ npx expo
 
 You can use the QRCode to open the app on your smartphone with expo go, or with your browser or Android Studio.
 
-
+**Important**! To use the API [MeaningCloud](https://www.meaningcloud.com/developer/apis) you will need to get an API key and place it in components/dreamAnalysis.tsx at line 51 (at apiKey variable).
 
 # Structure and Architecture
 
