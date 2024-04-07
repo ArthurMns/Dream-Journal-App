@@ -1,4 +1,4 @@
-# Dream Journal App
+# Dream-Journal-App
 
 
 
@@ -36,17 +36,17 @@ You can use the QRCode to open the app on your smartphone with expo go, or with 
 
 # Structure and Architecture
 
-The application works on a system of Tabs to change page and use the AsyncStorage to stock the dreams
+The application works on a system of Tabs to change page and use the AsyncStorage to stock the dreams.
 
 
 # Implemented features
 
 - Add a dream via a form (Title, description, luicid dream, nightmare).
 
-- Consult dream history.
+- Consult dream history:
+	- Display description and characteristics
 	- Search bar
 	- Delete a dream
-	- Display Description and characteristics
 
 - Semantic analysis of dreams using the external API [MeaningCloud](https://www.meaningcloud.com/developer/apis).
 
